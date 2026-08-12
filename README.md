@@ -1,11 +1,19 @@
-# 🖨️ Chapgar (چاپگر)
+<p align="center">
+  <img src="assets/logo.png" width="400" alt="Chapgar Logo">
+</p>
 
-> **Model Context Protocol (MCP) Server for Flawless Right-to-Left (RTL) Persian & Arabic PDF Generation powered by Typst.**
+<h1 align="center">Chapgar (چاپگر)</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![Python 3.10+](https://img.shields.io/badge/python-3.10%2B-blue.svg)](https://www.python.org/downloads/)
-[![MCP Ready](https://img.shields.io/badge/MCP-Compatible-brightgreen.svg)](https://modelcontextprotocol.io/)
-[![Engine: Typst](https://img.shields.io/badge/Engine-Typst-239dad.svg)](https://typst.app/)
+<p align="center">
+  <em>Model Context Protocol (MCP) Server for Flawless Right-to-Left (RTL) Persian & Arabic PDF Generation powered by Typst.</em>
+</p>
+
+<p align="center">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/License-MIT-yellow.svg" alt="License: MIT"></a>
+  <a href="https://www.python.org/downloads/"><img src="https://img.shields.io/badge/python-3.10%2B-blue.svg" alt="Python 3.10+"></a>
+  <a href="https://modelcontextprotocol.io/"><img src="https://img.shields.io/badge/MCP-Compatible-brightgreen.svg" alt="MCP Ready"></a>
+  <a href="https://typst.app/"><img src="https://img.shields.io/badge/Engine-Typst-239dad.svg" alt="Engine: Typst"></a>
+</p>
 
 **Chapgar** (چاپگر - Persian for *Printer*) enables AI agents (such as Claude Desktop, Antigravity IDE, Cursor, or Windsurf) to generate beautiful, pixel-perfect Persian and Arabic PDFs with native Right-to-Left formatting, zero bidirectional layout glitches, embedded typography, and automatic digit localization.
 
