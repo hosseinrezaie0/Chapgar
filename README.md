@@ -102,13 +102,16 @@ Add **Chapgar** to your preferred AI app or agent framework using the configurat
 
 ### 1. 🟧 Claude Desktop
 
+To install custom MCP servers in Claude Desktop, you need to update `claude_desktop_config.json` file.
+
 #### Configuration File Location:
 - **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`  
-  *(Full path: `C:\Users\<username>\AppData\Roaming\Claude\claude_desktop_config.json`)*
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
-#### `claude_desktop_config.json` (Windows Example):
+#### Add to `claude_desktop_config.json`:
+
+**Windows Example:**
 ```json
 {
   "mcpServers": {
@@ -117,22 +120,12 @@ Add **Chapgar** to your preferred AI app or agent framework using the configurat
       "args": [
         "C:\\path\\to\\Chapgar\\server.py"
       ]
-    },
-    "filesystem": {
-      "command": "cmd.exe",
-      "args": [
-        "/c",
-        "npx",
-        "-y",
-        "@modelcontextprotocol/server-filesystem",
-        "C:\\path\\to\\your\\project"
-      ]
     }
   }
 }
 ```
 
-#### `claude_desktop_config.json` (macOS / Linux Example):
+**macOS / Linux Example:**
 ```json
 {
   "mcpServers": {
@@ -146,7 +139,7 @@ Add **Chapgar** to your preferred AI app or agent framework using the configurat
 }
 ```
 
-> 💡 **Custom Provider Note**: Do **NOT** put top-level `"env"` keys in `claude_desktop_config.json` as it invalidates the file schema. To use custom endpoints/keys (`ANTHROPIC_BASE_URL` & `ANTHROPIC_API_KEY`), set them as OS Environment Variables or launch Claude via a `.bat` script.
+After updating the file, **restart Claude Desktop**. You should see a "plug" icon (or hammer icon) in your chat indicating the `generate_persian_pdf` tool is now available.
 
 ---
 
