@@ -5,7 +5,7 @@
 <h1 align="center">Chapgar (چاپگر)</h1>
 
 <p align="center">
-  <em>Model Context Protocol (MCP) Server for Flawless Right-to-Left (RTL) Persian & Arabic PDF Generation powered by Typst.</em>
+  <em>Model Context Protocol (MCP) Server for Flawless Right-to-Left (RTL) Persian PDF Generation powered by Typst.</em>
 </p>
 
 <p align="center">
@@ -15,7 +15,7 @@
   <a href="https://typst.app/"><img src="https://img.shields.io/badge/Engine-Typst-239dad.svg" alt="Engine: Typst"></a>
 </p>
 
-**Chapgar** (چاپگر - Persian for *Printer*) enables AI agents (such as Claude Desktop, Antigravity IDE, Cursor, or Windsurf) to generate beautiful, pixel-perfect Persian and Arabic PDFs with native Right-to-Left formatting, zero bidirectional layout glitches, embedded typography, and automatic digit localization.
+**Chapgar** (چاپگر - Persian for *Printer*) enables AI agents (such as Claude Desktop, Antigravity IDE, Cursor, or Windsurf) to generate beautiful, pixel-perfect Persian PDFs with native Right-to-Left formatting, zero bidirectional layout glitches, embedded typography, and automatic digit localization.
 
 ---
 
@@ -223,7 +223,7 @@ Antigravity IDE discovers workspace-level and global MCP servers.
 
 ## 🚀 Usage
 
-Once connected via MCP, your AI assistant can use the `generate_persian_pdf` tool automatically when asked to build PDFs in Persian or Arabic.
+Once connected via MCP, your AI assistant can use the `generate_persian_pdf` tool automatically when asked to build PDFs in Persian.
 
 ### Example AI Prompts
 > "یک گزارش مدیریتی فارسی به همراه جدول فروش و لیست اقدامات آتی به فرمت PDF تولید کن."

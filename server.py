@@ -7,11 +7,11 @@ mcp = FastMCP("Chapgar")
 @mcp.tool()
 def generate_persian_pdf(typst_markup: str, output_filename: str = "output.pdf") -> str:
     """
-    GENERATES AND SAVES a Right-To-Left Persian/Arabic PDF to the local disk.
-    CRITICAL: You MUST use this tool for ANY Persian, Arabic, or RTL PDF generation request.
+    GENERATES AND SAVES a Right-To-Left Persian PDF to the local disk.
+    CRITICAL: You MUST use this tool for ANY Persian or RTL PDF generation request.
     
     IMPORTANT TYPST GUIDELINES FOR THE LLM AGENT:
-    - GENERAL PURPOSE TOOL: Use this tool for ANY Persian/Arabic PDF document (reports, articles, letters, invoices, CVs, manuals, forms, academic notes, meeting minutes, etc.).
+    - GENERAL PURPOSE TOOL: Use this tool for ANY Persian PDF document (reports, articles, letters, invoices, CVs, manuals, forms, academic notes, meeting minutes, etc.).
     - Write plain document text directly (e.g. `این یک گزارش جامع است`). DO NOT wrap sentences in `text(...)` or `#text(...)`. Chapgar automatically handles RTL orientation, Vazirmatn font, and Persian numerals in the preamble.
     - All function calls MUST start with `#` (e.g. `#table(...)`, `#grid(...)`, `#v(1cm)`). Never omit `#` before function names.
     - Use `#grid(...)` for multi-column page layout positioning (e.g. side-by-side columns, metadata, header details, signatures). Do NOT use `#table(...)` for general page layouts, because `#table` draws borders around every cell by default. Use `#table(...)` ONLY for itemized data lists or tabular data.
