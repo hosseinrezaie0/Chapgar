@@ -1,0 +1,49 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "chapgar"
+version = "0.2.0"
+description = "Model Context Protocol (MCP) Server for Flawless Right-to-Left (RTL) Persian PDF Generation powered by Typst"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "MIT" }
+authors = [
+    { name = "Hossein Rezaie" }
+]
+keywords = ["mcp", "persian", "rtl", "pdf", "typst", "typography", "vazirmatn", "estedad"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Text Processing :: Fonts",
+    "Topic :: Scientific/Engineering :: Interface Engine/Protocol Translator",
+]
+dependencies = [
+    "fastmcp>=0.1.0",
+    "typst>=0.11.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.0.0",
+]
+
+[project.scripts]
+chapgar = "server:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["core*", "assets*"]
+
+[tool.setuptools.package-data]
+"core" = ["assets/fonts/*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
