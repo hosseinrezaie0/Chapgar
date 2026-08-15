@@ -43,6 +43,16 @@ test_markup = """
 """
 
 if __name__ == "__main__":
-    print("Running Chapgar Stress Test...")
-    output_path = create_pdf(test_markup, "chapgar_stress_test.pdf")
-    print(f"Success! Open your PDF here: {output_path}")
+    print("Running Chapgar Stress Tests...")
+    
+    # 1. Test default Vazirmatn
+    vazir_res = create_pdf(test_markup, "chapgar_stress_test.pdf", font_family="Vazirmatn", generate_preview=True)
+    print(f"1. Vazirmatn PDF created: {vazir_res['pdf_path']}")
+    if vazir_res.get("preview_path"):
+        print(f"   PNG Preview created: {vazir_res['preview_path']}")
+        
+    # 2. Test Estedad font
+    estedad_res = create_pdf(test_markup, "chapgar_stress_test_estedad.pdf", font_family="Estedad", paper_size="a4")
+    print(f"2. Estedad PDF created: {estedad_res['pdf_path']}")
+    
+    print("\nAll stress tests completed successfully!")
