@@ -64,10 +64,13 @@ By delegating the layout and compilation to Chapgar:
 
 - 🟢 **MCP Native**: Plugs directly into any Model Context Protocol host as a dedicated tool (`generate_persian_pdf`).
 - ⚡ **Powered by Typst**: Blazing fast compilation without heavy TeX/LaTeX dependencies.
-- 🔤 **Embedded High-Quality Fonts**: Pre-packaged with open-source **Vazirmatn** and **Estedad** fonts out of the box.
+- 🔤 **Multiple High-Quality Persian Fonts**: Choose between **Vazirmatn** (modern & clean) and **Estedad** (geometric & bold) out of the box.
+- 📐 **Configurable Page Dimensions**: Native support for standard paper formats (`A4`, `Letter`, `A5`, `A3`, `Legal`, etc.).
+- 🖼️ **Optional PNG Previews**: Compile high-resolution image thumbnails alongside your PDFs for instant chat previews.
 - ↔️ **Flawless RTL & BiDi Handling**: Native handling of mixed Persian and English text, inline code, mirrored brackets/parentheses, bullet points, and RTL tables.
 - 🔢 **Automatic Digit Localization**: Built-in rules to automatically map Western numerals (`0-9`) to Persian numerals (`۰-۹`).
-- 🧹 **Clean Execution**: Isolated compilation engine with automated temporary file cleanup.
+- 🔒 **Safe & Thread-Isolated Execution**: Thread-safe isolated temporary directory compilation with path safety validation.
+- 🧠 **Context-Aware Error Reporting**: Translates raw Typst compiler errors into precise line-number hints for self-correcting AI agents.
 
 ---
 
@@ -90,6 +93,11 @@ By delegating the layout and compilation to Chapgar:
    source .venv/bin/activate
    
    pip install -r requirements.txt
+   ```
+
+3. **(Optional) Install as an editable package**:
+   ```bash
+   pip install -e .
    ```
 
 ---
@@ -220,44 +228,59 @@ Antigravity IDE discovers workspace-level and global MCP servers.
 
 ---
 
-
 ## 🚀 Usage
 
 Once connected via MCP, your AI assistant can use the `generate_persian_pdf` tool automatically when asked to build PDFs in Persian.
 
-### Example AI Prompts
-> "یک گزارش مدیریتی فارسی به همراه جدول فروش و لیست اقدامات آتی به فرمت PDF تولید کن."
-
-> "یک فاکتور رسمی فروش به زبان فارسی با فونت وزیرمتن و شماره‌گذاری فارسی در فایل invoice.pdf ذخیره کن."
+### Tool Parameters
+- `typst_markup` (*string, required*): The raw Typst markup body.
+- `output_filename` (*string, optional*): Output file path (e.g. `report.pdf`). Default: `output.pdf`.
+- `font_family` (*string, optional*): Font choice: `"Vazirmatn"` (default) or `"Estedad"`.
+- `paper_size` (*string, optional*): Paper dimensions: `"a4"` (default), `"letter"`, `"a5"`, `"a3"`, `"legal"`.
+- `generate_preview` (*boolean, optional*): If `True`, also generates a PNG thumbnail of the first page. Default: `False`.
 
 ### Direct Python API Usage
-You can also invoke the core generator programmatically:
+You can also invoke the core generator programmatically in Python:
 
 ```python
 from core.generator import create_pdf
 
 typst_markup = """
 = گزارش نمونه
-این یک متن نمونه فارسی است که با *وزیرمتن* رندر شده است.
+این یک متن نمونه فارسی است که با فونت *استعداد* رندر شده است.
 
 - آیتم اول
-- آیتm دوم
+- آیتم دوم
 """
 
-output_path = create_pdf(typst_markup, "sample.pdf")
-print(f"PDF created at: {output_path}")
+result = create_pdf(
+    typst_markup,
+    output_filename="sample.pdf",
+    font_family="Estedad",
+    paper_size="a4",
+    generate_preview=True
+)
+
+print(f"PDF created at: {result['pdf_path']}")
+if result.get("preview_path"):
+    print(f"Preview image: {result['preview_path']}")
 ```
 
 ---
 
 ## 🧪 Testing
 
-To verify font loading, ZWNJ (نیم‌فاصله) support, BiDi rendering, tables, and numeric conversion, run the stress test script:
+Run the full automated pytest suite covering concurrency, sanitization, font selection, and error translation:
+
+```bash
+pytest -v
+```
+
+To run the visual rendering stress test:
 
 ```bash
 python tests/test_chapgar.py
 ```
-This will compile and save `chapgar_stress_test.pdf` in the root directory.
 
 ---
 
@@ -265,13 +288,15 @@ This will compile and save `chapgar_stress_test.pdf` in the root directory.
 
 ```
 Chapgar/
-├── server.py              # FastMCP server entry point
-├── requirements.txt       # Project dependencies (fastmcp, typst)
+├── pyproject.toml         # PEP 517/621 packaging & metadata
+├── requirements.txt       # Dependencies (fastmcp, typst, pytest)
+├── server.py              # FastMCP server entry point & tool definitions
 ├── core/
-│   ├── generator.py       # Typst PDF compilation engine & preamble logic
+│   ├── generator.py       # Thread-safe Typst engine, preamble, sanitization & errors
 │   └── assets/
 │       └── fonts/         # Embedded Vazirmatn & Estedad fonts
 └── tests/
+    ├── test_generator.py  # Automated pytest suite (concurrency, fonts, previews, errors)
     └── test_chapgar.py    # RTL, ZWNJ & BiDi stress test suite
 ```
 
