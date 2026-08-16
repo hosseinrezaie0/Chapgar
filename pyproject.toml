@@ -47,3 +47,8 @@ include = ["core*", "assets*"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 python_files = ["test_*.py"]
+pythonpath = ["."]
+markers = [
+    "unit: Unit tests that run fast and test isolated components without compilation",
+    "integration: Integration tests that perform full PDF compilation or MCP tool execution",
+]
