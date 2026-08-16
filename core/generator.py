@@ -28,19 +28,15 @@ def sanitize_markup(typst_markup: str) -> str:
     2. Strips #text(...)[...] or text(...)[...]
     3. Strips redundant conflicting preambles like #set text(...) and #set page(...)
     """
-    # 1. Match text(dir: rtl, lang: "fa", "...") or text(lang: "fa", dir: rtl, "...")
-    pattern1 = r'text\s*\(\s*(?:dir:\s*rtl\s*,\s*lang:\s*"fa"|lang:\s*"fa"\s*,\s*dir:\s*rtl)\s*,\s*"(.*?)"\s*\)'
-    cleaned = re.sub(pattern1, r'\1', typst_markup)
+    # 1. Match #text(dir: rtl, lang: "fa", "...") / single/double quotes, either order
+    pattern_quoted = r'#?text\s*\(\s*(?:dir:\s*rtl\s*,\s*lang:\s*["\']fa["\']|lang:\s*["\']fa["\']\s*,\s*dir:\s*rtl)\s*,\s*["\'](.*?)["\']\s*\)'
+    cleaned = re.sub(pattern_quoted, r'\1', typst_markup)
     
-    # 2. Match single quoted strings
-    pattern2 = r'text\s*\(\s*(?:dir:\s*rtl\s*,\s*lang:\s*"fa"|lang:\s*"fa"\s*,\s*dir:\s*rtl)\s*,\s*\'(.*?)\'\s*\)'
-    cleaned = re.sub(pattern2, r'\1', cleaned)
+    # 2. Match #text(...)[...] or text(...)[...]
+    pattern_bracket = r'#?text\s*\(\s*(?:dir:\s*rtl\s*,\s*lang:\s*["\']fa["\']|lang:\s*["\']fa["\']\s*,\s*dir:\s*rtl)\s*\)\s*\[(.*?)\]'
+    cleaned = re.sub(pattern_bracket, r'\1', cleaned, flags=re.DOTALL)
     
-    # 3. Match #text(...)[...] or text(...)[...]
-    pattern3 = r'#?text\s*\(\s*(?:dir:\s*rtl\s*,\s*lang:\s*"fa"|lang:\s*"fa"\s*,\s*dir:\s*rtl)\s*\)\s*\[(.*?)\]'
-    cleaned = re.sub(pattern3, r'\1', cleaned, flags=re.DOTALL)
-    
-    # 4. Strip conflicting user-generated global preambles
+    # 3. Strip conflicting user-generated global preambles
     cleaned = re.sub(r'#set\s+text\s*\([^)]*\)\s*', '', cleaned)
     cleaned = re.sub(r'#set\s+page\s*\([^)]*dir:\s*(?:ltr|rtl)[^)]*\)\s*', '', cleaned)
     
