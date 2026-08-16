@@ -104,22 +104,17 @@ By delegating the layout and compilation to Chapgar:
 
 ## ⚙️ MCP Integration Guide
 
-Add **Chapgar** to your preferred AI app or agent framework using the configuration guides below (replace `C:\path\to\Chapgar` or `/path/to/Chapgar` with your actual project location):
+Add **Chapgar** to your preferred AI app or agent framework using the configuration guides below (replace paths with your actual project location):
 
 ---
 
 ### 1. 🟧 Claude Desktop
 
-To install custom MCP servers in Claude Desktop, you need to update `claude_desktop_config.json` file.
-
-#### Configuration File Location:
-- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`  
+Add to your `claude_desktop_config.json`:
+- **Windows**: `%APPDATA%\Claude\claude_desktop_config.json`
 - **macOS**: `~/Library/Application Support/Claude/claude_desktop_config.json`
 - **Linux**: `~/.config/Claude/claude_desktop_config.json`
 
-#### Add to `claude_desktop_config.json`:
-
-**Windows Example:**
 ```json
 {
   "mcpServers": {
@@ -133,29 +128,50 @@ To install custom MCP servers in Claude Desktop, you need to update `claude_desk
 }
 ```
 
-**macOS / Linux Example:**
+---
+
+### 2. 🪄 Cursor
+
+Add to your workspace or global `.cursor/mcp.json`:
+
 ```json
 {
   "mcpServers": {
     "chapgar": {
-      "command": "/path/to/Chapgar/.venv/bin/python",
+      "command": "C:\\path\\to\\Chapgar\\.venv\\Scripts\\python.exe",
       "args": [
-        "/path/to/Chapgar/server.py"
+        "C:\\path\\to\\Chapgar\\server.py"
       ]
     }
   }
 }
 ```
 
-After updating the file, **restart Claude Desktop**. You should see a "plug" icon (or hammer icon) in your chat indicating the `generate_persian_pdf` tool is now available.
+---
+
+### 3. 🌊 Windsurf
+
+Add to `~/.codeium/windsurf/mcp_config.json`:
+
+```json
+{
+  "mcpServers": {
+    "chapgar": {
+      "command": "C:\\path\\to\\Chapgar\\.venv\\Scripts\\python.exe",
+      "args": [
+        "C:\\path\\to\\Chapgar\\server.py"
+      ]
+    }
+  }
+}
+```
 
 ---
 
-### 2. ⚡ OpenCode CLI (`opencode`)
+### 4. ⚡ OpenCode CLI (`opencode`)
 
-OpenCode CLI reads MCP servers from `opencode.json` (located in your project root or `~/.config/opencode/opencode.json`).
+Add to `opencode.json` (or `~/.config/opencode/opencode.json`):
 
-#### `opencode.json`:
 ```json
 {
   "mcp": {
@@ -177,22 +193,11 @@ opencode mcp add chapgar -- "C:\path\to\Chapgar\.venv\Scripts\python.exe" "C:\pa
 
 ---
 
-### 3. 🌐 AnythingLLM Desktop
+### 5. 🌐 AnythingLLM Desktop
 
-AnythingLLM supports stdio MCP tools directly in the desktop interface or via config files.
+- **Via GUI**: **Settings** (⚙️) ➔ **Agent Skills** / **MCP Servers** ➔ **Add Custom MCP Server** (Command: Python path, Args: `server.py` path).
+- **Via Config**: Edit `%APPDATA%\anythingllm-desktop\mcp.json`:
 
-#### Option A: Via GUI (Recommended)
-1. Open **AnythingLLM Desktop**.
-2. Go to **Settings** (⚙️) -> **Agent Skills** / **MCP Servers**.
-3. Click **Add Custom MCP Server**.
-4. Enter the details:
-   - **Server Name**: `chapgar`
-   - **Command**: `C:\path\to\Chapgar\.venv\Scripts\python.exe` *(or `/path/to/Chapgar/.venv/bin/python`)*
-   - **Arguments**: `C:\path\to\Chapgar\server.py` *(or `/path/to/Chapgar/server.py`)*
-5. Save & restart agent workspace.
-
-#### Option B: Via `mcp.json` Config
-Create or edit `%APPDATA%\anythingllm-desktop\mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -208,11 +213,10 @@ Create or edit `%APPDATA%\anythingllm-desktop\mcp.json`:
 
 ---
 
-### 4. 🚀 Antigravity App / IDE
+### 6. 🚀 Antigravity IDE
 
-Antigravity IDE discovers workspace-level and global MCP servers.
+Add to `.agents/mcp.json` (workspace) or `~/.gemini/config/mcp.json` (global):
 
-#### Workspace Config (`.agents/mcp.json` or `~/.gemini/config/mcp.json`):
 ```json
 {
   "mcpServers": {
@@ -270,10 +274,21 @@ if result.get("preview_path"):
 
 ## 🧪 Testing
 
-Run the full automated pytest suite covering concurrency, sanitization, font selection, and error translation:
+Chapgar includes a modular test suite separated into unit and integration tests:
 
 ```bash
+# Run all tests
 pytest -v
+
+# Run fast unit tests only
+pytest tests/unit -v
+
+# Run integration tests (PDF compilation & MCP server)
+pytest tests/integration -v
+
+# Run by pytest marker
+pytest -m unit
+pytest -m integration
 ```
 
 To run the visual rendering stress test:
@@ -288,16 +303,25 @@ python tests/test_chapgar.py
 
 ```
 Chapgar/
-├── pyproject.toml         # PEP 517/621 packaging & metadata
-├── requirements.txt       # Dependencies (fastmcp, typst, pytest)
-├── server.py              # FastMCP server entry point & tool definitions
+├── LICENSE                        # MIT License
+├── pyproject.toml                 # PEP 517/621 packaging & metadata
+├── requirements.txt               # Dependencies (fastmcp, typst, pytest)
+├── server.py                      # FastMCP server entry point & tool definitions
 ├── core/
-│   ├── generator.py       # Thread-safe Typst engine, preamble, sanitization & errors
+│   ├── generator.py               # Thread-safe Typst engine, preamble, sanitization & errors
 │   └── assets/
-│       └── fonts/         # Embedded Vazirmatn & Estedad fonts
+│       └── fonts/                 # Embedded Vazirmatn & Estedad fonts
 └── tests/
-    ├── test_generator.py  # Automated pytest suite (concurrency, fonts, previews, errors)
-    └── test_chapgar.py    # RTL, ZWNJ & BiDi stress test suite
+    ├── conftest.py                # Pytest fixtures (sample Persian & BiDi markup)
+    ├── test_chapgar.py            # RTL, ZWNJ & BiDi visual stress test script
+    ├── unit/                      # Isolated unit tests
+    │   ├── test_error_handling.py    # Error formatting and offset translation tests
+    │   ├── test_path_resolution.py   # Safe path handling and directory resolution tests
+    │   ├── test_preamble.py          # Font, paper size, and RTL preamble generation tests
+    │   └── test_sanitize_markup.py   # LLM markup wrapper sanitization tests
+    └── integration/               # End-to-end integration tests
+        ├── test_mcp_server.py        # FastMCP tool invocation and response verification
+        └── test_pdf_compilation.py   # PDF compilation, font embedding, preview image generation
 ```
 
 ---
