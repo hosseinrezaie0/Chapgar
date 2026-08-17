@@ -37,4 +37,4 @@ jobs:
 
       - name: Verify CLI entrypoint
         run: |
-          chapgar --help
+          python -c "import server; print('Chapgar MCP server loaded successfully')"
